@@ -160,18 +160,17 @@ scheduler.start()
 
 # --- Webhook Handler ---
 
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running"
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    signature = request.headers.get("X-Line-Signature")
-
-    body = request.get_data(as_text=True)
-
-    try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        abort(400)
-
-    return "OK"
+    return "OK", 200
 
 
 @handler.add(FollowEvent)
